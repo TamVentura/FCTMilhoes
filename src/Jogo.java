@@ -1,3 +1,6 @@
+
+import java.util.Locale;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -81,7 +84,7 @@ public class Jogo {
             System.out.println("Nivel: " + (level + 1) + " Jogadores: 0");
         } else {
             System.out.println("Nivel: " + (level + 1) + " Jogadores: " + nivel[level]
-                    + " Valor premio: " + (dinheiro * getPercentagem(level)) + " Euros");
+                    + " Valor premio: " + String.format(Locale.US, "%.2f", (dinheiro * getPercentagem(level))/nivel[level]) + " Euros");
         }
     }
 
@@ -95,7 +98,7 @@ public class Jogo {
     public int makePlay(String jogada) {
         String[] entradas = jogada.split(" ");
 
-        if (entradas.length != NUMBER_ESTRELAS+NUMBER_NUMEROS) {
+        if (entradas.length < NUMBER_ESTRELAS + NUMBER_NUMEROS + 1) {
             return -1;
         }
 
@@ -140,19 +143,26 @@ public class Jogo {
      * Sai do jogo
      */
     public void exitGame() {
-        float dinheiroPremios = dinheiro * (PERCENTAGEM1 * convertToInt(nivel[0]))
-                + dinheiro * (PERCENTAGEM2 * convertToInt(nivel[1]))
-                + dinheiro * (PERCENTAGEM3 * convertToInt(nivel[2]))
-                + dinheiro * (PERCENTAGEM4 * convertToInt(nivel[3]))
-                + dinheiro * (PERCENTAGEM5 * convertToInt(nivel[4]))
-                + dinheiro * (PERCENTAGEM6 * convertToInt(nivel[5]))
-                + dinheiro * (PERCENTAGEM7 * convertToInt(nivel[6]))
-                + dinheiro * (PERCENTAGEM8 * convertToInt(nivel[7]))
-                + dinheiro * (PERCENTAGEM9 * convertToInt(nivel[8]))
-                + dinheiro * (PERCENTAGEM10 * convertToInt(nivel[9]))
-                + dinheiro * (PERCENTAGEM11 * convertToInt(nivel[10]))
-                + dinheiro * (PERCENTAGEM12 * convertToInt(nivel[11]))
-                + dinheiro * (PERCENTAGEM13 * convertToInt(nivel[12]));
+        
+        float dinheiroPremios = 0;
+        
+        for (int i = 0; i < 13; i++) {
+            dinheiroPremios += dinheiro * (getPercentagem(i)*convertToInt(nivel[i]));
+        }
+        
+//        float dinheiroPremios = dinheiro * (PERCENTAGEM1 * convertToInt(nivel[0]))
+//                + dinheiro * (PERCENTAGEM2 * convertToInt(nivel[1]))
+//                + dinheiro * (PERCENTAGEM3 * convertToInt(nivel[2]))
+//                + dinheiro * (PERCENTAGEM4 * convertToInt(nivel[3]))
+//                + dinheiro * (PERCENTAGEM5 * convertToInt(nivel[4]))
+//                + dinheiro * (PERCENTAGEM6 * convertToInt(nivel[5]))
+//                + dinheiro * (PERCENTAGEM7 * convertToInt(nivel[6]))
+//                + dinheiro * (PERCENTAGEM8 * convertToInt(nivel[7]))
+//                + dinheiro * (PERCENTAGEM9 * convertToInt(nivel[8]))
+//                + dinheiro * (PERCENTAGEM10 * convertToInt(nivel[9]))
+//                + dinheiro * (PERCENTAGEM11 * convertToInt(nivel[10]))
+//                + dinheiro * (PERCENTAGEM12 * convertToInt(nivel[11]))
+//                + dinheiro * (PERCENTAGEM13 * convertToInt(nivel[12]));
 
         dinheiro -= dinheiroPremios;
         reset();
@@ -182,7 +192,7 @@ public class Jogo {
      * @return dinheiro com 2 casas decimais
      */
     public String getDinheiroString() {
-        return String.format("%.2f", dinheiro);
+        return String.format(Locale.US, "%.2f", dinheiro);
     }
 
     /**
