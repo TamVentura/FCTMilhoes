@@ -84,7 +84,7 @@ public class Jogo {
             System.out.println("Nivel: " + (level + 1) + " Jogadores: 0");
         } else {
             System.out.println("Nivel: " + (level + 1) + " Jogadores: " + nivel[level]
-                    + " Valor premio: " + String.format(Locale.US, "%.2f", (dinheiro * getPercentagem(level))/nivel[level]) + " Euros");
+                    + " Valor premio: " + String.format("%.2f", (dinheiro * getPercentagem(level))/nivel[level]) + " Euros");
         }
     }
 
@@ -192,7 +192,7 @@ public class Jogo {
      * @return dinheiro com 2 casas decimais
      */
     public String getDinheiroString() {
-        return String.format(Locale.US, "%.2f", dinheiro);
+        return String.format("%.2f", dinheiro);
     }
 
     /**
