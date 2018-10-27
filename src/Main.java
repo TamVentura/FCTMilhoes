@@ -30,8 +30,8 @@ public class Main {
     public static void main(String args[]) {
         Scanner sc;
         try {
-            sc = new Scanner(new File("E:\\Escola\\Tiago\\1Semestre\\IP\\TP1\\T04\\input"));
-            Jogo game = new Jogo();//TODO
+            sc = new Scanner(new File("E:\\Escola\\Tiago\\1Semestre\\IP\\TP1\\T10\\input"));
+            Jogo game = new Jogo();
             while (running) {
                 prepareCommand(readCommand(sc), game);
             }
@@ -45,7 +45,6 @@ public class Main {
     }
 
     private static void prepareCommand(String command, Jogo game) {
-        //System.out.println(command);
 
         if (!inGame) {
             executeCommandOutGame(command, game);

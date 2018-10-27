@@ -10,6 +10,9 @@
  */
 public class Jogo {
 
+    /*
+        Constantes
+     */
     public static final float PERCENTAGEM1 = .432f;
     public static final float PERCENTAGEM2 = .0415f;
     public static final float PERCENTAGEM3 = .0192f;
@@ -23,20 +26,34 @@ public class Jogo {
     public static final float PERCENTAGEM11 = .0495f;
     public static final float PERCENTAGEM12 = .1385f;
     public static final float PERCENTAGEM13 = .1725f;
+    public static final int NUMBER_ESTRELAS = 2;
+    public static final int NUMBER_NUMEROS = 5;
 
+    /*
+        Variáveis de instância
+     */
     private int[] nivel;
-
     private float dinheiro;
     private Key chave;
 
+    /**
+     * Cria um novo jogo
+     */
     public Jogo() {
         nivel = new int[13];
         reset();
         this.dinheiro = 0;
     }
 
+    /**
+     * Inicia um novo jogo
+     *
+     * @param dinheiro - dinheiro a colocar no jogo
+     * @pre: dinheiro>0
+     * @return 1 o dinheiro seja maior que 0, 0 caso contrário
+     */
     public int newGame(float dinheiro) {
-        if (dinheiro<=0) {
+        if (dinheiro <= 0) {
             return 0;
         }
         this.dinheiro += dinheiro;
@@ -44,12 +61,21 @@ public class Jogo {
         return 1;
     }
 
+    /**
+     * Escreve o resultado do jogo na consola
+     */
     public void printResults() {
         for (int i = 0; i < 13; i++) {
             printLevel(i);
         }
     }
 
+    /**
+     * Escreve o resultado de cada nivel na consola
+     *
+     * @param level - o nivel a ser escrito na consola
+     * @pre: level >=0 && level <13
+     */
     public void printLevel(int level) {
         if (nivel[level] == 0) {
             System.out.println("Nivel: " + (level + 1) + " Jogadores: 0");
@@ -59,60 +85,113 @@ public class Jogo {
         }
     }
 
+    /**
+     * Faz a jogada especificada no comando
+     *
+     * @param jogada - comando de jogada
+     * @return -1 caso exista um erro no parametro jogada, 0 caso nao se
+     * encontre am nenhum nivel, nivel caso contrário
+     */
     public int makePlay(String jogada) {
         String[] entradas = jogada.split(" ");
 
-        if (entradas.length < 8) {
+        if (entradas.length != NUMBER_ESTRELAS+NUMBER_NUMEROS) {
             return -1;
         }
 
-        int[] numeros = new int[5];
-        int[] estrelas = new int[2];
+        int[] numeros = new int[NUMBER_NUMEROS];
+        int[] estrelas = new int[NUMBER_ESTRELAS];
 
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < NUMBER_NUMEROS; i++) {
             numeros[i] = Integer.valueOf(entradas[i + 1]);
         }
-        for (int i = 0; i < 2; i++) {
-            estrelas[i] = Integer.valueOf(entradas[i + 6]);
+        for (int i = 0; i < NUMBER_ESTRELAS; i++) {
+            estrelas[i] = Integer.valueOf(entradas[i + 1 + NUMBER_NUMEROS]);
         }
 
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < NUMBER_NUMEROS; i++) {
 
             if (numeros[i] > 50 || numeros[i] < 1) {
                 return -1;
             }
-            for (int j = 0; j < 5; j++) {
-                if (numeros[i] == numeros[j] && i!=j) {
+            for (int j = 0; j < NUMBER_NUMEROS; j++) {
+                if (numeros[i] == numeros[j] && i != j) {
                     return -1;
                 }
             }
         }
 
-        
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < NUMBER_ESTRELAS; i++) {
 
             if (estrelas[i] > 12 || estrelas[i] < 1) {
                 return -1;
             }
-            for (int j = 0; j < 2; j++) {
-                if (estrelas[i] == estrelas[j] && i!=j) {
+            for (int j = 0; j < NUMBER_ESTRELAS; j++) {
+                if (estrelas[i] == estrelas[j] && i != j) {
                     return -1;
                 }
             }
         }
 
-
         return getNivel(getNumberEqual(numeros, chave.criaIteratorNumbers(), 5), getNumberEqual(estrelas, chave.criaIteratorStars(), 2));
     }
 
+    /**
+     * Sai do jogo
+     */
+    public void exitGame() {
+        float dinheiroPremios = dinheiro * (PERCENTAGEM1 * convertToInt(nivel[0]))
+                + dinheiro * (PERCENTAGEM2 * convertToInt(nivel[1]))
+                + dinheiro * (PERCENTAGEM3 * convertToInt(nivel[2]))
+                + dinheiro * (PERCENTAGEM4 * convertToInt(nivel[3]))
+                + dinheiro * (PERCENTAGEM5 * convertToInt(nivel[4]))
+                + dinheiro * (PERCENTAGEM6 * convertToInt(nivel[5]))
+                + dinheiro * (PERCENTAGEM7 * convertToInt(nivel[6]))
+                + dinheiro * (PERCENTAGEM8 * convertToInt(nivel[7]))
+                + dinheiro * (PERCENTAGEM9 * convertToInt(nivel[8]))
+                + dinheiro * (PERCENTAGEM10 * convertToInt(nivel[9]))
+                + dinheiro * (PERCENTAGEM11 * convertToInt(nivel[10]))
+                + dinheiro * (PERCENTAGEM12 * convertToInt(nivel[11]))
+                + dinheiro * (PERCENTAGEM13 * convertToInt(nivel[12]));
+
+        dinheiro -= dinheiroPremios;
+        reset();
+    }
+
+    /*
+        Reinicia os valores da quantidade de jogadas em cada nivel
+     */
+    public void reset() {
+        for (int i = 0; i < 13; i++) {
+            nivel[i] = 0;
+        }
+    }
+
+    /**
+     * Obtem o valor do dinheiro
+     *
+     * @return dinheiro
+     */
     public float getDinheiro() {
         return dinheiro;
     }
 
+    /**
+     * Obtem o valor do dinheiro formatado
+     *
+     * @return dinheiro com 2 casas decimais
+     */
     public String getDinheiroString() {
         return String.format("%.2f", dinheiro);
     }
 
+    /**
+     * Obtem a percentagem correspondente ao nivel
+     *
+     * @param level - o nivel a obter a percentagem
+     * @pre: level >= 0 && level < 13
+     * @return a percentagem correspondente
+     */
     public float getPercentagem(int level) {
         switch (level) {
             case 0:
@@ -146,6 +225,14 @@ public class Jogo {
         }
     }
 
+    /**
+     * Obtem o numero de numeros iguais no vetor lista e no IteratorInt it
+     *
+     * @param lista - lista de inteiros a comparar
+     * @param it - iterator a comparar
+     * @param size - numero de elementos a verificar
+     * @return numero de numeros iguais
+     */
     public int getNumberEqual(int[] lista, IteratorInt it, int size) {
         int result = 0;
         for (int item : lista) {
@@ -159,6 +246,13 @@ public class Jogo {
         return result;
     }
 
+    /**
+     * Indica o nivel correspondente ao numero de numeros e de estrelas certos
+     *
+     * @param nNumeros - numero de numeros certos
+     * @param nEstrelas - numero de estrelas certas
+     * @return nivel da jogada
+     */
     public int getNivel(int nNumeros, int nEstrelas) {
         if (nNumeros == 5 && nEstrelas == 2) {
             nivel[0]++;
@@ -203,37 +297,17 @@ public class Jogo {
         return 0;
     }
 
-    public int toBinnary(int number) {
+    /**
+     * Obtem um numero e converte para outro
+     *
+     * @param number - numero a converter
+     * @return 1 caso diferente de 0, 0 caso contrário
+     */
+    public int convertToInt(int number) {
         if (number != 0) {
             return 1;
         } else {
             return 0;
-        }
-    }
-
-    public void exitGame() {
-        //TODO
-        float dinheiroPremios = dinheiro * (PERCENTAGEM1 * toBinnary(nivel[0]))
-                + dinheiro * (PERCENTAGEM2 * toBinnary(nivel[1]))
-                + dinheiro * (PERCENTAGEM3 * toBinnary(nivel[2]))
-                + dinheiro * (PERCENTAGEM4 * toBinnary(nivel[3]))
-                + dinheiro * (PERCENTAGEM5 * toBinnary(nivel[4]))
-                + dinheiro * (PERCENTAGEM6 * toBinnary(nivel[5]))
-                + dinheiro * (PERCENTAGEM7 * toBinnary(nivel[6]))
-                + dinheiro * (PERCENTAGEM8 * toBinnary(nivel[7]))
-                + dinheiro * (PERCENTAGEM9 * toBinnary(nivel[8]))
-                + dinheiro * (PERCENTAGEM10 * toBinnary(nivel[9]))
-                + dinheiro * (PERCENTAGEM11 * toBinnary(nivel[10]))
-                + dinheiro * (PERCENTAGEM12 * toBinnary(nivel[11]))
-                + dinheiro * (PERCENTAGEM13 * toBinnary(nivel[12]));
-
-        dinheiro -= dinheiroPremios;
-        reset();
-    }
-
-    public void reset() {
-        for (int i = 0; i < 13; i++) {
-            nivel[i] = 0;
         }
     }
 
