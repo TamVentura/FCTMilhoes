@@ -51,7 +51,7 @@ public class Jogo {
     /**
      * Inicia um novo jogo
      *
-     * @param dinheiro - dinheiro a colocar no jogo
+     * @param dinheiro dinheiro a colocar no jogo
      * @pre: dinheiro>0
      * @return 1 o dinheiro seja maior que 0, 0 caso contrário
      */
@@ -76,7 +76,7 @@ public class Jogo {
     /**
      * Escreve o resultado de cada nivel na consola
      *
-     * @param level - o nivel a ser escrito na consola
+     * @param level o nivel a ser escrito na consola
      * @pre: level >=0 && level <13
      */
     public void printLevel(int level) {
@@ -91,7 +91,7 @@ public class Jogo {
     /**
      * Faz a jogada especificada no comando
      *
-     * @param jogada - comando de jogada
+     * @param jogada comando de jogada
      * @return -1 caso exista um erro no parametro jogada, 0 caso nao se
      * encontre am nenhum nivel, nivel caso contrário
      */
@@ -198,7 +198,7 @@ public class Jogo {
     /**
      * Obtem a percentagem correspondente ao nivel
      *
-     * @param level - o nivel a obter a percentagem
+     * @param level o nivel a obter a percentagem
      * @pre: level >= 0 && level < 13
      * @return a percentagem correspondente
      */
@@ -238,9 +238,9 @@ public class Jogo {
     /**
      * Obtem o numero de numeros iguais no vetor lista e no IteratorInt it
      *
-     * @param lista - lista de inteiros a comparar
-     * @param it - iterator a comparar
-     * @param size - numero de elementos a verificar
+     * @param lista lista de inteiros a comparar
+     * @param it iterator a comparar
+     * @param size numero de elementos a verificar
      * @return numero de numeros iguais
      */
     public int getNumberEqual(int[] lista, IteratorInt it, int size) {
@@ -259,8 +259,8 @@ public class Jogo {
     /**
      * Indica o nivel correspondente ao numero de numeros e de estrelas certos
      *
-     * @param nNumeros - numero de numeros certos
-     * @param nEstrelas - numero de estrelas certas
+     * @param nNumeros numero de numeros certos
+     * @param nEstrelas numero de estrelas certas
      * @return nivel da jogada
      */
     public int getNivel(int nNumeros, int nEstrelas) {
@@ -310,7 +310,7 @@ public class Jogo {
     /**
      * Obtem um numero e converte para outro
      *
-     * @param number - numero a converter
+     * @param number numero a converter
      * @return 1 caso diferente de 0, 0 caso contrário
      */
     public int convertToInt(int number) {

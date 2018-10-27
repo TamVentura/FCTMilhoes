@@ -30,7 +30,7 @@ public class Main {
     public static void main(String args[]) {
         Scanner sc;
         try {
-            sc = new Scanner(new File("E:\\Escola\\Tiago\\1Semestre\\IP\\TP1\\T10\\input"));
+            sc = new Scanner(new File("E:\\Escola\\Tiago\\1Semestre\\IP\\TP1\\T04\\input"));
             Jogo game = new Jogo();
             while (running) {
                 prepareCommand(readCommand(sc), game);
@@ -105,17 +105,16 @@ public class Main {
 
     private static void executeSai(Jogo game) {
         running = false;
-        
+
         System.out.println("Valor acumulado: " + game.getDinheiroString() + " Euros. Ate a proxima.");
     }
 
     private static void executeNovo(float dinheiro, Jogo game) {
-        
-        
-        if (game.newGame(dinheiro)!=0) {
+
+        if (game.newGame(dinheiro) != 0) {
             System.out.println("Jogo iniciado. Valor do premio: " + game.getDinheiroString() + " Euros.");
             inGame = true;
-        }else{
+        } else {
             System.out.println("Valor incorrecto.");
         }
     }
