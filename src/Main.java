@@ -30,12 +30,13 @@ public class Main {
     public static void main(String args[]) {
         Scanner sc;
         try {
-            sc = new Scanner(new File("E:\\Escola\\Tiago\\1Semestre\\IP\\TP1\\T04\\input"));
+            //sc = new Scanner(System.in);
+            sc = new Scanner(new File("E:\\Escola\\Tiago\\1Semestre\\IP\\TP1\\T10\\input"));
             Jogo game = new Jogo();
             while (running) {
-                prepareCommand(readCommand(sc), game);
+                prepareCommand(sc, game);
             }
-        } catch (FileNotFoundException ex) {
+        } catch (Exception ex) {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
@@ -44,18 +45,21 @@ public class Main {
         return sc.nextLine().toUpperCase();
     }
 
-    private static void prepareCommand(String command, Jogo game) {
+    private static void prepareCommand(Scanner sc, Jogo game) {
 
         if (!inGame) {
-            executeCommandOutGame(command, game);
+            executeCommandOutGame(sc, game);
         } else {
-            executeCommandInGame(command, game);
+            executeCommandInGame(sc, game);
         }
     }
 
-    private static void executeCommandOutGame(String command, Jogo game) {
-        String[] param = command.split(" ");
+    private static void executeCommandOutGame(Scanner sc, Jogo game) {
+
         System.out.print("> ");
+        String command = readCommand(sc);
+
+        String[] param = command.split(" ");
         switch (param[0]) {
             case COMMAND_AJUDA:
                 executeAjudaOut();
@@ -72,9 +76,13 @@ public class Main {
         }
     }
 
-    private static void executeCommandInGame(String command, Jogo game) {
-        String[] param = command.split(" ");
+    private static void executeCommandInGame(Scanner sc, Jogo game) {
+
         System.out.print("FCTMILHOES> ");
+
+        String command = readCommand(sc);
+
+        String[] param = command.split(" ");
         switch (param[0]) {
             case COMMAND_AJUDA:
                 executeAjudaIn();

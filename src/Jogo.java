@@ -6,7 +6,6 @@ import java.util.Locale;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 /**
  *
  * @author Tiago Ventura
@@ -84,7 +83,7 @@ public class Jogo {
             System.out.println("Nivel: " + (level + 1) + " Jogadores: 0");
         } else {
             System.out.println("Nivel: " + (level + 1) + " Jogadores: " + nivel[level]
-                    + " Valor premio: " + String.format("%.2f", (dinheiro * getPercentagem(level))/nivel[level]) + " Euros");
+                    + " Valor premio: " + String.format("%.2f", (dinheiro * getPercentagem(level)) / nivel[level]) + " Euros");
         }
     }
 
@@ -143,13 +142,13 @@ public class Jogo {
      * Sai do jogo
      */
     public void exitGame() {
-        
+
         float dinheiroPremios = 0;
-        
+
         for (int i = 0; i < 13; i++) {
-            dinheiroPremios += dinheiro * (getPercentagem(i)*convertToInt(nivel[i]));
+            dinheiroPremios += dinheiro * (getPercentagem(i) * convertToInt(nivel[i]));
         }
-        
+
 //        float dinheiroPremios = dinheiro * (PERCENTAGEM1 * convertToInt(nivel[0]))
 //                + dinheiro * (PERCENTAGEM2 * convertToInt(nivel[1]))
 //                + dinheiro * (PERCENTAGEM3 * convertToInt(nivel[2]))
@@ -163,7 +162,6 @@ public class Jogo {
 //                + dinheiro * (PERCENTAGEM11 * convertToInt(nivel[10]))
 //                + dinheiro * (PERCENTAGEM12 * convertToInt(nivel[11]))
 //                + dinheiro * (PERCENTAGEM13 * convertToInt(nivel[12]));
-
         dinheiro -= dinheiroPremios;
         reset();
     }
