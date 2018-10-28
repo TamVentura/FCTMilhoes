@@ -41,7 +41,6 @@ public class Main {
     }
 
     private static void prepareCommand(Scanner sc, Jogo game) {
-
         if (!inGame) {
             executeCommandOutGame(sc, game);
         } else {
@@ -50,11 +49,11 @@ public class Main {
     }
 
     private static void executeCommandOutGame(Scanner sc, Jogo game) {
-
         System.out.print("> ");
         String command = readCommand(sc);
 
         String[] param = command.split(" ");
+        
         switch (param[0]) {
             case COMMAND_AJUDA:
                 executeAjudaOut();
@@ -72,12 +71,11 @@ public class Main {
     }
 
     private static void executeCommandInGame(Scanner sc, Jogo game) {
-
         System.out.print("FCTMILHOES> ");
-
         String command = readCommand(sc);
 
         String[] param = command.split(" ");
+        
         switch (param[0]) {
             case COMMAND_AJUDA:
                 executeAjudaIn();
@@ -113,7 +111,6 @@ public class Main {
     }
 
     private static void executeNovo(float dinheiro, Jogo game) {
-
         if (game.newGame(dinheiro) != 0) {
             System.out.println("Jogo iniciado. Valor do premio: " + game.getDinheiroString() + " Euros.");
             inGame = true;
