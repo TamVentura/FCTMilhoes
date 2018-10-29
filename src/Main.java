@@ -26,7 +26,7 @@ public class Main {
         Scanner sc;
         try {
             //sc = new Scanner(System.in);
-            sc = new Scanner(new File("E:\\Escola\\Tiago\\1Semestre\\IP\\TP1\\T10\\input"));
+            sc = new Scanner(new File("C:\\Users\\taven\\OneDrive - campus.fct.unl.pt\\Ambiente de Trabalho\\input"));
             Jogo game = new Jogo();
             while (running) {
                 prepareCommand(sc, game);
@@ -37,7 +37,7 @@ public class Main {
     }
 
     private static String readCommand(Scanner sc) {
-        return sc.nextLine().toUpperCase();
+        return sc.next().toUpperCase();
     }
 
     private static void prepareCommand(Scanner sc, Jogo game) {
@@ -51,10 +51,8 @@ public class Main {
     private static void executeCommandOutGame(Scanner sc, Jogo game) {
         System.out.print("> ");
         String command = readCommand(sc);
-
-        String[] param = command.split(" ");
         
-        switch (param[0]) {
+        switch (command) {
             case COMMAND_AJUDA:
                 executeAjudaOut();
                 break;
@@ -62,7 +60,8 @@ public class Main {
                 executeSai(game);
                 break;
             case COMMAND_NOVO:
-                executeNovo(Float.valueOf(param[1]), game);
+                executeNovo(sc.nextFloat(), game);
+                sc.nextLine();
                 break;
             default:
                 System.out.println("Comando inexistente.");
@@ -73,15 +72,13 @@ public class Main {
     private static void executeCommandInGame(Scanner sc, Jogo game) {
         System.out.print("FCTMILHOES> ");
         String command = readCommand(sc);
-
-        String[] param = command.split(" ");
         
-        switch (param[0]) {
+        switch (command) {
             case COMMAND_AJUDA:
                 executeAjudaIn();
                 break;
             case COMMAND_JOGA:
-                executeJoga(command, game);
+                executeJoga(sc, game);
                 break;
             case COMMAND_FIM:
                 executeFim(game);
@@ -119,8 +116,20 @@ public class Main {
         }
     }
 
-    private static void executeJoga(String jogada, Jogo game) {
-        int nivel = game.makePlay(jogada);
+    private static void executeJoga(Scanner sc, Jogo game) {
+        int[] numeros = new int[5];
+        int[] estrelas= new int[2];
+        
+        for (int i = 0; i < 5; i++) {
+            numeros[i] = sc.nextInt();
+        }
+        
+        for (int i = 0; i < 2; i++) {
+            estrelas[i] = sc.nextInt();
+        }
+        
+        sc.nextLine();
+        int nivel = game.makePlay(numeros,estrelas);
         if (nivel == -1) {
             System.out.println("Chave incorrecta.");
         } else if (nivel == 0) {

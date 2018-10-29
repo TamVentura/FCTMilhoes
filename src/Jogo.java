@@ -23,8 +23,7 @@ public class Jogo {
     public static final float PERCENTAGEM11 = .0495f;
     public static final float PERCENTAGEM12 = .1385f;
     public static final float PERCENTAGEM13 = .1725f;
-    public static final int NUMBER_ESTRELAS = 2;
-    public static final int NUMBER_NUMEROS = 5;
+    public static final Locale LINGUA = Locale.US;
 
     /*
         Variáveis de instância
@@ -78,7 +77,7 @@ public class Jogo {
             System.out.println("Nivel: " + (level + 1) + " Jogadores: 0");
         } else {
             System.out.println("Nivel: " + (level + 1) + " Jogadores: " + nivel[level]
-                    + " Valor premio: " + String.format("%.2f", (dinheiro * getPercentagem(level)) / nivel[level]) + " Euros");
+                    + " Valor premio: " + String.format(LINGUA, "%.2f", (dinheiro * getPercentagem(level)) / nivel[level]) + " Euros");
         }
     }
 
@@ -89,48 +88,17 @@ public class Jogo {
      * @return -1 caso exista um erro no parametro jogada, 0 caso nao se
      * encontre am nenhum nivel, nivel caso contrário
      */
-    public int makePlay(String jogada) {
-        String[] entradas = jogada.split(" ");
-
-        if (entradas.length < NUMBER_ESTRELAS + NUMBER_NUMEROS + 1) {
+    public int makePlay(int[] numeros, int... estrelas) {
+        Jogada jogada = new Jogada(numeros, estrelas);
+        if (!jogada.isValid()) {
             return -1;
         }
-
-        int[] numeros = new int[NUMBER_NUMEROS];
-        int[] estrelas = new int[NUMBER_ESTRELAS];
-
-        for (int i = 0; i < NUMBER_NUMEROS; i++) {
-            numeros[i] = Integer.valueOf(entradas[i + 1]);
-        }
-        for (int i = 0; i < NUMBER_ESTRELAS; i++) {
-            estrelas[i] = Integer.valueOf(entradas[i + 1 + NUMBER_NUMEROS]);
+        int lvl = jogada.getNivelJogada(chave);
+        if (lvl != 0) {
+            nivel[lvl - 1]++;
         }
 
-        for (int i = 0; i < NUMBER_NUMEROS; i++) {
-
-            if (numeros[i] > 50 || numeros[i] < 1) {
-                return -1;
-            }
-            for (int j = 0; j < NUMBER_NUMEROS; j++) {
-                if (numeros[i] == numeros[j] && i != j) {
-                    return -1;
-                }
-            }
-        }
-
-        for (int i = 0; i < NUMBER_ESTRELAS; i++) {
-
-            if (estrelas[i] > 12 || estrelas[i] < 1) {
-                return -1;
-            }
-            for (int j = 0; j < NUMBER_ESTRELAS; j++) {
-                if (estrelas[i] == estrelas[j] && i != j) {
-                    return -1;
-                }
-            }
-        }
-
-        return getNivel(getNumberEqual(numeros, chave.criaIteratorNumbers(), 5), getNumberEqual(estrelas, chave.criaIteratorStars(), 2));
+        return jogada.getNivelJogada(chave);
     }
 
     /**
@@ -143,19 +111,6 @@ public class Jogo {
             dinheiroPremios += dinheiro * (getPercentagem(i) * convertToInt(nivel[i]));
         }
 
-//        float dinheiroPremios = dinheiro * (PERCENTAGEM1 * convertToInt(nivel[0]))
-//                + dinheiro * (PERCENTAGEM2 * convertToInt(nivel[1]))
-//                + dinheiro * (PERCENTAGEM3 * convertToInt(nivel[2]))
-//                + dinheiro * (PERCENTAGEM4 * convertToInt(nivel[3]))
-//                + dinheiro * (PERCENTAGEM5 * convertToInt(nivel[4]))
-//                + dinheiro * (PERCENTAGEM6 * convertToInt(nivel[5]))
-//                + dinheiro * (PERCENTAGEM7 * convertToInt(nivel[6]))
-//                + dinheiro * (PERCENTAGEM8 * convertToInt(nivel[7]))
-//                + dinheiro * (PERCENTAGEM9 * convertToInt(nivel[8]))
-//                + dinheiro * (PERCENTAGEM10 * convertToInt(nivel[9]))
-//                + dinheiro * (PERCENTAGEM11 * convertToInt(nivel[10]))
-//                + dinheiro * (PERCENTAGEM12 * convertToInt(nivel[11]))
-//                + dinheiro * (PERCENTAGEM13 * convertToInt(nivel[12]));
         dinheiro -= dinheiroPremios;
         reset();
     }
@@ -184,7 +139,7 @@ public class Jogo {
      * @return dinheiro com 2 casas decimais
      */
     public String getDinheiroString() {
-        return String.format("%.2f", dinheiro);
+        return String.format(LINGUA, "%.2f", dinheiro);
     }
 
     /**
@@ -225,78 +180,6 @@ public class Jogo {
             default:
                 return 0;
         }
-    }
-
-    /**
-     * Obtem o numero de numeros iguais no vetor lista e no IteratorInt it
-     *
-     * @param lista lista de inteiros a comparar
-     * @param it iterator a comparar
-     * @param size numero de elementos a verificar
-     * @return numero de numeros iguais
-     */
-    public int getNumberEqual(int[] lista, IteratorInt it, int size) {
-        int result = 0;
-        for (int item : lista) {
-            for (int i = 0; i < size; i++) {
-                if (item == it.nextInt()) {
-                    result++;
-                }
-            }
-            it.reinitialize();
-        }
-        return result;
-    }
-
-    /**
-     * Indica o nivel correspondente ao numero de numeros e de estrelas certos
-     *
-     * @param nNumeros numero de numeros certos
-     * @param nEstrelas numero de estrelas certas
-     * @return nivel da jogada
-     */
-    public int getNivel(int nNumeros, int nEstrelas) {
-        if (nNumeros == 5 && nEstrelas == 2) {
-            nivel[0]++;
-            return 1;
-        } else if (nNumeros == 5 && nEstrelas == 1) {
-            nivel[1]++;
-            return 2;
-        } else if (nNumeros == 5 && nEstrelas == 0) {
-            nivel[2]++;
-            return 3;
-        } else if (nNumeros == 4 && nEstrelas == 2) {
-            nivel[3]++;
-            return 4;
-        } else if (nNumeros == 4 && nEstrelas == 1) {
-            nivel[4]++;
-            return 5;
-        } else if (nNumeros == 3 && nEstrelas == 2) {
-            nivel[5]++;
-            return 6;
-        } else if (nNumeros == 4 && nEstrelas == 0) {
-            nivel[6]++;
-            return 7;
-        } else if (nNumeros == 2 && nEstrelas == 2) {
-            nivel[7]++;
-            return 8;
-        } else if (nNumeros == 3 && nEstrelas == 1) {
-            nivel[8]++;
-            return 9;
-        } else if (nNumeros == 3 && nEstrelas == 0) {
-            nivel[9]++;
-            return 10;
-        } else if (nNumeros == 1 && nEstrelas == 2) {
-            nivel[10]++;
-            return 11;
-        } else if (nNumeros == 2 && nEstrelas == 1) {
-            nivel[11]++;
-            return 12;
-        } else if (nNumeros == 2 && nEstrelas == 0) {
-            nivel[12]++;
-            return 13;
-        }
-        return 0;
     }
 
     /**
