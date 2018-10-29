@@ -10,22 +10,16 @@ public class Jogo {
     /*
         Constantes
      */
-    public static final float PERCENTAGEM1 = .432f;
-    public static final float PERCENTAGEM2 = .0415f;
-    public static final float PERCENTAGEM3 = .0192f;
-    public static final float PERCENTAGEM4 = .0145f;
-    public static final float PERCENTAGEM5 = .0148f;
-    public static final float PERCENTAGEM6 = .0167f;
-    public static final float PERCENTAGEM7 = .0138f;
-    public static final float PERCENTAGEM8 = .0175f;
-    public static final float PERCENTAGEM9 = .0285f;
-    public static final float PERCENTAGEM10 = .041f;
-    public static final float PERCENTAGEM11 = .0495f;
-    public static final float PERCENTAGEM12 = .1385f;
-    public static final float PERCENTAGEM13 = .1725f;
     public static final int NUMBER_ESTRELAS = 2;
     public static final int NUMBER_NUMEROS = 5;
-
+    
+    public static final int MAX_NUMERO = 50;
+    public static final int MAX_ESTRELA = 12;
+    
+    public static final int NUMBER_LEVELS = 13;
+    
+    public static final int[][] COMBINACOES = {{5,2},{5,1},{5,0},{4,2},{4,1},{3,2},{4,0},{2,2},{3,1},{3,0},{1,2},{2,1},{2,0}};
+    public static final float[] PERCENTAGEM = {.432f,.0415f,.0192f,.0145f,.0148f,.0167f,.0138f,.0175f,.0285f,.041f,.0495f,.1385f,.1725f};
     /*
         Variáveis de instância
      */
@@ -108,7 +102,7 @@ public class Jogo {
 
         for (int i = 0; i < NUMBER_NUMEROS; i++) {
 
-            if (numeros[i] > 50 || numeros[i] < 1) {
+            if (numeros[i] > MAX_NUMERO || numeros[i] < 1) {
                 return -1;
             }
             for (int j = 0; j < NUMBER_NUMEROS; j++) {
@@ -120,7 +114,7 @@ public class Jogo {
 
         for (int i = 0; i < NUMBER_ESTRELAS; i++) {
 
-            if (estrelas[i] > 12 || estrelas[i] < 1) {
+            if (estrelas[i] > MAX_ESTRELA || estrelas[i] < 1) {
                 return -1;
             }
             for (int j = 0; j < NUMBER_ESTRELAS; j++) {
@@ -139,23 +133,10 @@ public class Jogo {
     public void exitGame() {
         float dinheiroPremios = 0;
 
-        for (int i = 0; i < 13; i++) {
+        for (int i = 0; i < NUMBER_LEVELS; i++) {
             dinheiroPremios += dinheiro * (getPercentagem(i) * convertToInt(nivel[i]));
         }
 
-//        float dinheiroPremios = dinheiro * (PERCENTAGEM1 * convertToInt(nivel[0]))
-//                + dinheiro * (PERCENTAGEM2 * convertToInt(nivel[1]))
-//                + dinheiro * (PERCENTAGEM3 * convertToInt(nivel[2]))
-//                + dinheiro * (PERCENTAGEM4 * convertToInt(nivel[3]))
-//                + dinheiro * (PERCENTAGEM5 * convertToInt(nivel[4]))
-//                + dinheiro * (PERCENTAGEM6 * convertToInt(nivel[5]))
-//                + dinheiro * (PERCENTAGEM7 * convertToInt(nivel[6]))
-//                + dinheiro * (PERCENTAGEM8 * convertToInt(nivel[7]))
-//                + dinheiro * (PERCENTAGEM9 * convertToInt(nivel[8]))
-//                + dinheiro * (PERCENTAGEM10 * convertToInt(nivel[9]))
-//                + dinheiro * (PERCENTAGEM11 * convertToInt(nivel[10]))
-//                + dinheiro * (PERCENTAGEM12 * convertToInt(nivel[11]))
-//                + dinheiro * (PERCENTAGEM13 * convertToInt(nivel[12]));
         dinheiro -= dinheiroPremios;
         reset();
     }
@@ -164,7 +145,7 @@ public class Jogo {
         Reinicia os valores da quantidade de jogadas em cada nivel
      */
     public void reset() {
-        for (int i = 0; i < 13; i++) {
+        for (int i = 0; i < NUMBER_LEVELS; i++) {
             nivel[i] = 0;
         }
     }
@@ -191,39 +172,14 @@ public class Jogo {
      * Obtem a percentagem correspondente ao nivel
      *
      * @param level o nivel a obter a percentagem
-     * @pre: level >= 0 && level < 13
+     * @pre: level >= 0 && level < NUMBER_LEVELS
      * @return a percentagem correspondente
      */
     public float getPercentagem(int level) {
-        switch (level) {
-            case 0:
-                return PERCENTAGEM1;
-            case 1:
-                return PERCENTAGEM2;
-            case 2:
-                return PERCENTAGEM3;
-            case 3:
-                return PERCENTAGEM4;
-            case 4:
-                return PERCENTAGEM5;
-            case 5:
-                return PERCENTAGEM6;
-            case 6:
-                return PERCENTAGEM7;
-            case 7:
-                return PERCENTAGEM8;
-            case 8:
-                return PERCENTAGEM9;
-            case 9:
-                return PERCENTAGEM10;
-            case 10:
-                return PERCENTAGEM11;
-            case 11:
-                return PERCENTAGEM12;
-            case 12:
-                return PERCENTAGEM13;
-            default:
-                return 0;
+        if (level<NUMBER_LEVELS&&level>=0) {
+            return PERCENTAGEM[level];
+        }else{
+            return 0;
         }
     }
 
@@ -256,47 +212,36 @@ public class Jogo {
      * @return nivel da jogada
      */
     public int getNivel(int nNumeros, int nEstrelas) {
-        if (nNumeros == 5 && nEstrelas == 2) {
-            nivel[0]++;
-            return 1;
-        } else if (nNumeros == 5 && nEstrelas == 1) {
-            nivel[1]++;
-            return 2;
-        } else if (nNumeros == 5 && nEstrelas == 0) {
-            nivel[2]++;
-            return 3;
-        } else if (nNumeros == 4 && nEstrelas == 2) {
-            nivel[3]++;
-            return 4;
-        } else if (nNumeros == 4 && nEstrelas == 1) {
-            nivel[4]++;
-            return 5;
-        } else if (nNumeros == 3 && nEstrelas == 2) {
-            nivel[5]++;
-            return 6;
-        } else if (nNumeros == 4 && nEstrelas == 0) {
-            nivel[6]++;
-            return 7;
-        } else if (nNumeros == 2 && nEstrelas == 2) {
-            nivel[7]++;
-            return 8;
-        } else if (nNumeros == 3 && nEstrelas == 1) {
-            nivel[8]++;
-            return 9;
-        } else if (nNumeros == 3 && nEstrelas == 0) {
-            nivel[9]++;
-            return 10;
-        } else if (nNumeros == 1 && nEstrelas == 2) {
-            nivel[10]++;
-            return 11;
-        } else if (nNumeros == 2 && nEstrelas == 1) {
-            nivel[11]++;
-            return 12;
-        } else if (nNumeros == 2 && nEstrelas == 0) {
-            nivel[12]++;
-            return 13;
+        for (int i = 0; i < 13; i++) {
+            if (getNumeros(i)==nNumeros&&getEstrelas(i)==nEstrelas) {
+                nivel[i]++;
+                return i+1;
+            }
         }
         return 0;
+    }
+    
+    /**
+     * Indica o numero de numeros correspondente ao nivel
+     * 
+     * @param level nivel
+     * @pre: level >= 0 && level < NUMBER_LEVELS
+     * @return numero de numeros correspondentes ao nivel
+     */
+    public int getNumeros(int level){
+        return COMBINACOES[level][0];
+    }
+    
+    
+    /**
+     * Indica o numero de estrelas correspondentes ao nivel
+     * 
+     * @param level nivel
+     * @pre: level >= 0 && level < NUMBER_LEVELS
+     * @return numero de estreas correspondentesao nivel
+     */
+    public int getEstrelas(int level){
+        return COMBINACOES[level][1];
     }
 
     /**

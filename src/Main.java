@@ -26,7 +26,7 @@ public class Main {
         Scanner sc;
         try {
             //sc = new Scanner(System.in);
-            sc = new Scanner(new File("E:\\Escola\\Tiago\\1Semestre\\IP\\TP1\\T10\\input"));
+            sc = new Scanner(new File("C:\\Users\\taven\\OneDrive - campus.fct.unl.pt\\Ambiente de Trabalho\\input"));
             Jogo game = new Jogo();
             while (running) {
                 prepareCommand(sc, game);
