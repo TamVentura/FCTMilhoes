@@ -5,7 +5,7 @@ import java.util.Locale;
  *
  * @author Tiago Ventura
  */
-public class Jogo {
+public class Game {
 
     /*
         Constantes
@@ -35,7 +35,7 @@ public class Jogo {
     /**
      * Cria um novo jogo
      */
-    public Jogo() {
+    public Game() {
         nivel = new int[13];
         reset();
         this.dinheiro = 0;

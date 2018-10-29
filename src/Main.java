@@ -27,7 +27,7 @@ public class Main {
         try {
             //sc = new Scanner(System.in);
             sc = new Scanner(new File("C:\\Users\\taven\\OneDrive - campus.fct.unl.pt\\Ambiente de Trabalho\\input"));
-            Jogo game = new Jogo();
+            Game game = new Game();
             while (running) {
                 prepareCommand(sc, game);
             }
@@ -40,7 +40,7 @@ public class Main {
         return sc.next().toUpperCase();
     }
 
-    private static void prepareCommand(Scanner sc, Jogo game) {
+    private static void prepareCommand(Scanner sc, Game game) {
         if (!inGame) {
             executeCommandOutGame(sc, game);
         } else {
@@ -48,7 +48,7 @@ public class Main {
         }
     }
 
-    private static void executeCommandOutGame(Scanner sc, Jogo game) {
+    private static void executeCommandOutGame(Scanner sc, Game game) {
         System.out.print("> ");
         String command = readCommand(sc);
         
@@ -69,7 +69,7 @@ public class Main {
         }
     }
 
-    private static void executeCommandInGame(Scanner sc, Jogo game) {
+    private static void executeCommandInGame(Scanner sc, Game game) {
         System.out.print("FCTMILHOES> ");
         String command = readCommand(sc);
         
@@ -101,13 +101,13 @@ public class Main {
                 + "ajuda - Mostra os comandos existentes");
     }
 
-    private static void executeSai(Jogo game) {
+    private static void executeSai(Game game) {
         running = false;
 
         System.out.println("Valor acumulado: " + game.getDinheiroString() + " Euros. Ate a proxima.");
     }
 
-    private static void executeNovo(float dinheiro, Jogo game) {
+    private static void executeNovo(float dinheiro, Game game) {
         if (game.newGame(dinheiro) != 0) {
             System.out.println("Jogo iniciado. Valor do premio: " + game.getDinheiroString() + " Euros.");
             inGame = true;
@@ -116,7 +116,7 @@ public class Main {
         }
     }
 
-    private static void executeJoga(Scanner sc, Jogo game) {
+    private static void executeJoga(Scanner sc, Game game) {
         int[] numeros = new int[5];
         int[] estrelas= new int[2];
         
@@ -139,7 +139,7 @@ public class Main {
         }
     }
 
-    private static void executeFim(Jogo game) {
+    private static void executeFim(Game game) {
         inGame = false;
         game.printResults();
         game.exitGame();
