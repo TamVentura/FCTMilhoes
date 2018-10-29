@@ -1,25 +1,24 @@
 
-import java.util.Locale;
-
 /**
  *
  * @author Tiago Ventura
  */
-public class Jogo {
+public class Game {
 
     /*
         Constantes
      */
     public static final int NUMBER_ESTRELAS = 2;
     public static final int NUMBER_NUMEROS = 5;
-    
+
     public static final int MAX_NUMERO = 50;
     public static final int MAX_ESTRELA = 12;
-    
+
     public static final int NUMBER_LEVELS = 13;
-    
-    public static final int[][] COMBINACOES = {{5,2},{5,1},{5,0},{4,2},{4,1},{3,2},{4,0},{2,2},{3,1},{3,0},{1,2},{2,1},{2,0}};
-    public static final float[] PERCENTAGEM = {.432f,.0415f,.0192f,.0145f,.0148f,.0167f,.0138f,.0175f,.0285f,.041f,.0495f,.1385f,.1725f};
+
+    public static final int[][] COMBINACOES = {{5, 2}, {5, 1}, {5, 0}, {4, 2}, {4, 1}, {3, 2}, {4, 0}, {2, 2}, {3, 1}, {3, 0}, {1, 2}, {2, 1}, {2, 0}};
+    public static final float[] PERCENTAGEM = {.432f, .0415f, .0192f, .0145f, .0148f, .0167f, .0138f, .0175f, .0285f, .041f, .0495f, .1385f, .1725f};
+
     /*
         Variáveis de instância
      */
@@ -30,7 +29,7 @@ public class Jogo {
     /**
      * Cria um novo jogo
      */
-    public Jogo() {
+    public Game() {
         nivel = new int[13];
         reset();
         this.dinheiro = 0;
@@ -172,13 +171,13 @@ public class Jogo {
      * Obtem a percentagem correspondente ao nivel
      *
      * @param level o nivel a obter a percentagem
-     * @pre: level >= 0 && level < NUMBER_LEVELS
+     * @pre: level >= 0 && level < 13
      * @return a percentagem correspondente
      */
     public float getPercentagem(int level) {
-        if (level<NUMBER_LEVELS&&level>=0) {
+        if (level < NUMBER_LEVELS && level >= 0) {
             return PERCENTAGEM[level];
-        }else{
+        } else {
             return 0;
         }
     }
@@ -213,34 +212,33 @@ public class Jogo {
      */
     public int getNivel(int nNumeros, int nEstrelas) {
         for (int i = 0; i < 13; i++) {
-            if (getNumeros(i)==nNumeros&&getEstrelas(i)==nEstrelas) {
+            if (getNumeros(i) == nNumeros && getEstrelas(i) == nEstrelas) {
                 nivel[i]++;
-                return i+1;
+                return i + 1;
             }
         }
         return 0;
     }
-    
+
     /**
      * Indica o numero de numeros correspondente ao nivel
-     * 
+     *
      * @param level nivel
-     * @pre: level >= 0 && level < NUMBER_LEVELS
+     * @pre: level >= 0 && level < 13
      * @return numero de numeros correspondentes ao nivel
      */
-    public int getNumeros(int level){
+    public int getNumeros(int level) {
         return COMBINACOES[level][0];
     }
-    
-    
+
     /**
      * Indica o numero de estrelas correspondentes ao nivel
-     * 
+     *
      * @param level nivel
-     * @pre: level >= 0 && level < NUMBER_LEVELS
+     * @pre: level >= 0 && level < 13
      * @return numero de estreas correspondentesao nivel
      */
-    public int getEstrelas(int level){
+    public int getEstrelas(int level) {
         return COMBINACOES[level][1];
     }
 
