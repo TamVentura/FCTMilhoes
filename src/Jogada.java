@@ -11,15 +11,24 @@
  */
 public class Jogada {
 
-    
-    
     private int[] numeros, estrelas;
 
+    /**
+     * Cria uma jogada
+     *
+     * @param numeros os numeros da jogada
+     * @param estrelas as estrelas da jogada
+     */
     public Jogada(int[] numeros, int... estrelas) {
         this.numeros = numeros;
         this.estrelas = estrelas;
     }
 
+    /**
+     * Diz se a jogada corrente é válida
+     *
+     * @return true se a jogada for valida, false caso contrario
+     */
     public boolean isValid() {
         for (int i = 0; i < 5; i++) {
 
@@ -48,6 +57,12 @@ public class Jogada {
         return true;
     }
 
+    /**
+     * Diz qual o nivel da jogada
+     *
+     * @param chave - Chave do torneio corrente
+     * @return 0 caso n esteja em nenhum nivel, nivel da jogada caso contrario
+     */
     public int getNivelJogada(Key chave) {
         int nNumeros = getNumberEqual(numeros, chave.criaIteratorNumbers(), 5);
         int nEstrelas = getNumberEqual(estrelas, chave.criaIteratorStars(), 2);
@@ -82,7 +97,7 @@ public class Jogada {
         return 0;
 
     }
-
+    
     /**
      * Obtem o numero de numeros iguais no vetor lista e no IteratorInt it
      *

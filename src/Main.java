@@ -1,8 +1,5 @@
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FilterInputStream;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -19,8 +16,7 @@ public class Main {
     private static final String COMMAND_JOGA = "JOGA";
     private static final String COMMAND_FIM = "FIM";
 
-    private static boolean running = true;
-    private static boolean inGame = false;
+ 
 
     public static void main(String args[]) {
         Scanner sc;
@@ -28,7 +24,7 @@ public class Main {
             //sc = new Scanner(System.in);
             sc = new Scanner(new File("C:\\Users\\taven\\OneDrive - campus.fct.unl.pt\\Ambiente de Trabalho\\input"));
             Game game = new Game();
-            while (running) {
+            while (game.isRunning()) {
                 prepareCommand(sc, game);
             }
         } catch (Exception ex) {
@@ -41,10 +37,10 @@ public class Main {
     }
 
     private static void prepareCommand(Scanner sc, Game game) {
-        if (!inGame) {
-            executeCommandOutGame(sc, game);
-        } else {
+        if (game.isInGame()) {
             executeCommandInGame(sc, game);
+        } else {
+            executeCommandOutGame(sc, game);
         }
     }
 
@@ -102,7 +98,7 @@ public class Main {
     }
 
     private static void executeSai(Game game) {
-        running = false;
+        game.endProgram();
 
         System.out.println("Valor acumulado: " + game.getDinheiroString() + " Euros. Ate a proxima.");
     }
@@ -110,7 +106,6 @@ public class Main {
     private static void executeNovo(float dinheiro, Game game) {
         if (game.newGame(dinheiro) != 0) {
             System.out.println("Jogo iniciado. Valor do premio: " + game.getDinheiroString() + " Euros.");
-            inGame = true;
         } else {
             System.out.println("Valor incorrecto.");
         }
@@ -140,7 +135,6 @@ public class Main {
     }
 
     private static void executeFim(Game game) {
-        inGame = false;
         game.printResults();
         game.exitGame();
         System.out.println("Valor acumulado: " + game.getDinheiroString() + " Euros");

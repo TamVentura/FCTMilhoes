@@ -28,6 +28,9 @@ public class Game {
     /*
         Variáveis de instância
      */
+    private boolean running = true;
+    private boolean inGame = false;
+
     private int[] nivel;
     private float dinheiro;
     private Key chave;
@@ -54,6 +57,7 @@ public class Game {
         }
         this.dinheiro += dinheiro;
         chave = new Key();
+        inGame = true;
         return 1;
     }
 
@@ -112,6 +116,7 @@ public class Game {
         }
 
         dinheiro -= dinheiroPremios;
+        inGame = false;
         reset();
     }
 
@@ -183,6 +188,13 @@ public class Game {
     }
 
     /**
+     * Sai do programa
+     */
+    public void endProgram() {
+        running = false;
+    }
+
+    /**
      * Obtem um numero e converte para outro
      *
      * @param number numero a converter
@@ -194,6 +206,24 @@ public class Game {
         } else {
             return 0;
         }
+    }
+
+    /**
+     * Diz se está algum jogo a correr
+     *
+     * @return true caso esteja algum jogo a correr, false caso contrário
+     */
+    public boolean isInGame() {
+        return inGame;
+    }
+
+    /**
+     * Diz se o programa está a correr
+     *
+     * @return true caso o programa esteja a correr, false caso contrário
+     */
+    public boolean isRunning() {
+        return running;
     }
 
 }
