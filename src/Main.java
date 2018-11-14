@@ -1,8 +1,5 @@
 
-import java.io.File;
 import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -16,38 +13,30 @@ public class Main {
     private static final String COMMAND_JOGA = "JOGA";
     private static final String COMMAND_FIM = "FIM";
 
- 
-
     public static void main(String args[]) {
-        Scanner sc;
-        try {
-            //sc = new Scanner(System.in);
-            sc = new Scanner(new File("C:\\Users\\taven\\OneDrive - campus.fct.unl.pt\\Ambiente de Trabalho\\input"));
-            Game game = new Game();
-            while (game.isRunning()) {
-                prepareCommand(sc, game);
+        Scanner sc = new Scanner(System.in);
+
+        Game game = new Game();
+        while (game.isRunning()) {
+            if (game.isInGame()) {
+                executeCommandInGame(sc, game);
+            } else {
+                executeCommandOutGame(sc, game);
             }
-        } catch (Exception ex) {
-            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+            sc.nextLine();
         }
+
+        sc.close();
     }
 
     private static String readCommand(Scanner sc) {
         return sc.next().toUpperCase();
     }
 
-    private static void prepareCommand(Scanner sc, Game game) {
-        if (game.isInGame()) {
-            executeCommandInGame(sc, game);
-        } else {
-            executeCommandOutGame(sc, game);
-        }
-    }
-
     private static void executeCommandOutGame(Scanner sc, Game game) {
         System.out.print("> ");
         String command = readCommand(sc);
-        
+
         switch (command) {
             case COMMAND_AJUDA:
                 executeAjudaOut();
@@ -57,7 +46,6 @@ public class Main {
                 break;
             case COMMAND_NOVO:
                 executeNovo(sc.nextFloat(), game);
-                sc.nextLine();
                 break;
             default:
                 System.out.println("Comando inexistente.");
@@ -68,7 +56,7 @@ public class Main {
     private static void executeCommandInGame(Scanner sc, Game game) {
         System.out.print("FCTMILHOES> ");
         String command = readCommand(sc);
-        
+
         switch (command) {
             case COMMAND_AJUDA:
                 executeAjudaIn();
@@ -100,12 +88,12 @@ public class Main {
     private static void executeSai(Game game) {
         game.endProgram();
 
-        System.out.println("Valor acumulado: " + game.getDinheiroString() + " Euros. Ate a proxima.");
+        System.out.printf("Valor acumulado: %.2f Euros. Ate a proxima.\n", game.getDinheiro());
     }
 
     private static void executeNovo(float dinheiro, Game game) {
         if (game.newGame(dinheiro) != 0) {
-            System.out.println("Jogo iniciado. Valor do premio: " + game.getDinheiroString() + " Euros.");
+            System.out.printf("Jogo iniciado. Valor do premio: %.2f Euros.\n", game.getDinheiro());
         } else {
             System.out.println("Valor incorrecto.");
         }
@@ -113,31 +101,36 @@ public class Main {
 
     private static void executeJoga(Scanner sc, Game game) {
         int[] numeros = new int[5];
-        int[] estrelas= new int[2];
-        
+        int[] estrelas = new int[2];
+
         for (int i = 0; i < 5; i++) {
             numeros[i] = sc.nextInt();
         }
-        
+
         for (int i = 0; i < 2; i++) {
             estrelas[i] = sc.nextInt();
         }
-        
-        sc.nextLine();
-        int nivel = game.makePlay(numeros,estrelas);
-        if (nivel == -1) {
-            System.out.println("Chave incorrecta.");
-        } else if (nivel == 0) {
-            System.out.println("Obrigado pela aposta.");
-        } else {
-            System.out.println("Obrigado pela aposta. Premio de nivel: " + nivel);
+
+        int nivel = game.makePlay(numeros, estrelas);
+        switch (nivel) {
+            case -1:
+                System.out.println("Chave incorrecta.");
+                break;
+            case 0:
+                System.out.println("Obrigado pela aposta.");
+                break;
+            default:
+                System.out.println("Obrigado pela aposta. Premio de nivel: " + nivel);
+                break;
         }
     }
 
     private static void executeFim(Game game) {
-        game.printResults();
+        for (int i = 0; i < 13; i++) {
+            System.out.println(game.printLevel(i));
+        }
         game.exitGame();
-        System.out.println("Valor acumulado: " + game.getDinheiroString() + " Euros");
+        System.out.printf("Valor acumulado: %.2f Euros\n", game.getDinheiro());
     }
 
 }

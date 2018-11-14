@@ -1,6 +1,4 @@
 
-import java.util.Locale;
-
 /**
  *
  * @author Tiago Ventura
@@ -23,10 +21,9 @@ public class Game {
     public static final float PERCENTAGEM11 = .0495f;
     public static final float PERCENTAGEM12 = .1385f;
     public static final float PERCENTAGEM13 = .1725f;
-    public static final Locale LINGUA = Locale.US;
 
     /*
-        Variáveis de instância
+        Variaveis de instancia
      */
     private boolean running = true;
     private boolean inGame = false;
@@ -49,7 +46,7 @@ public class Game {
      *
      * @param dinheiro dinheiro a colocar no jogo
      * @pre: dinheiro>0
-     * @return 1 o dinheiro seja maior que 0, 0 caso contrário
+     * @return 1 o dinheiro seja maior que 0, 0 caso contrario
      */
     public int newGame(float dinheiro) {
         if (dinheiro <= 0) {
@@ -62,37 +59,31 @@ public class Game {
     }
 
     /**
-     * Escreve o resultado do jogo na consola
-     */
-    public void printResults() {
-        for (int i = 0; i < 13; i++) {
-            printLevel(i);
-        }
-    }
-
-    /**
-     * Escreve o resultado de cada nivel na consola
+     * Retorna o resultado a ser escrito na consola
      *
      * @param level o nivel a ser escrito na consola
+     * @return conteudo a apresentar na consola
      * @pre: level >=0 && level <13
      */
-    public void printLevel(int level) {
+    public String printLevel(int level) {
         if (nivel[level] == 0) {
-            System.out.println("Nivel: " + (level + 1) + " Jogadores: 0");
+            return ("Nivel: " + (level + 1) + " Jogadores: 0");
         } else {
-            System.out.println("Nivel: " + (level + 1) + " Jogadores: " + nivel[level]
-                    + " Valor premio: " + String.format(LINGUA, "%.2f", (dinheiro * getPercentagem(level)) / nivel[level]) + " Euros");
+            return ("Nivel: " + (level + 1) + " Jogadores: " + nivel[level]
+                    + " Valor premio: " + String.format("%.2f", (dinheiro * getPercentagem(level)) / nivel[level]) + " Euros");
         }
     }
 
     /**
-     * Faz a jogada especificada no comando
+     * Faz a jogada com determinados numeros e estrelas
      *
-     * @param jogada comando de jogada
+     * @param numeros numeros da jogada
+     * @param estrelas estrelas da jogada
+     *
      * @return -1 caso exista um erro no parametro jogada, 0 caso nao se
-     * encontre am nenhum nivel, nivel caso contrário
+     * encontre em nenhum nivel, nivel caso contrario
      */
-    public int makePlay(int[] numeros, int... estrelas) {
+    public int makePlay(int[] numeros, int[] estrelas) {
         Jogada jogada = new Jogada(numeros, estrelas);
         if (!jogada.isValid()) {
             return -1;
@@ -101,8 +92,7 @@ public class Game {
         if (lvl != 0) {
             nivel[lvl - 1]++;
         }
-
-        return jogada.getNivelJogada(chave);
+        return lvl;
     }
 
     /**
@@ -112,7 +102,9 @@ public class Game {
         float dinheiroPremios = 0;
 
         for (int i = 0; i < 13; i++) {
-            dinheiroPremios += dinheiro * (getPercentagem(i) * convertToInt(nivel[i]));
+            if (nivel[i] != 0) {
+                dinheiroPremios += dinheiro * (getPercentagem(i));
+            }
         }
 
         dinheiro -= dinheiroPremios;
@@ -120,8 +112,8 @@ public class Game {
         reset();
     }
 
-    /*
-        Reinicia os valores da quantidade de jogadas em cada nivel
+    /**
+     * Reinicia os valores da quantidade de jogadas em cada nivel
      */
     public void reset() {
         for (int i = 0; i < 13; i++) {
@@ -136,15 +128,6 @@ public class Game {
      */
     public float getDinheiro() {
         return dinheiro;
-    }
-
-    /**
-     * Obtem o valor do dinheiro formatado
-     *
-     * @return dinheiro com 2 casas decimais
-     */
-    public String getDinheiroString() {
-        return String.format(LINGUA, "%.2f", dinheiro);
     }
 
     /**
@@ -195,32 +178,18 @@ public class Game {
     }
 
     /**
-     * Obtem um numero e converte para outro
+     * Diz se esta algum jogo a correr
      *
-     * @param number numero a converter
-     * @return 1 caso diferente de 0, 0 caso contrário
-     */
-    public int convertToInt(int number) {
-        if (number != 0) {
-            return 1;
-        } else {
-            return 0;
-        }
-    }
-
-    /**
-     * Diz se está algum jogo a correr
-     *
-     * @return true caso esteja algum jogo a correr, false caso contrário
+     * @return true caso esteja algum jogo a correr, false caso contrario
      */
     public boolean isInGame() {
         return inGame;
     }
 
     /**
-     * Diz se o programa está a correr
+     * Diz se o programa esta a correr
      *
-     * @return true caso o programa esteja a correr, false caso contrário
+     * @return true caso o programa esteja a correr, false caso contrario
      */
     public boolean isRunning() {
         return running;

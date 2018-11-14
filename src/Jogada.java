@@ -11,6 +11,9 @@
  */
 public class Jogada {
 
+    /*
+        Variaveis de instancia
+     */
     private int[] numeros, estrelas;
 
     /**
@@ -25,7 +28,7 @@ public class Jogada {
     }
 
     /**
-     * Diz se a jogada corrente é válida
+     * Diz se a jogada corrente e valida
      *
      * @return true se a jogada for valida, false caso contrario
      */
@@ -35,33 +38,27 @@ public class Jogada {
             if (numeros[i] > 50 || numeros[i] < 1) {
                 return false;
             }
-            for (int j = 0; j < 5; j++) {
-                if (numeros[i] == numeros[j] && i != j) {
+            for (int j = i + 1; j < 5; j++) {
+                if (numeros[i] == numeros[j]) {
                     return false;
                 }
             }
         }
 
         for (int i = 0; i < 2; i++) {
-
             if (estrelas[i] > 12 || estrelas[i] < 1) {
                 return false;
             }
-            for (int j = 0; j < 2; j++) {
-                if (estrelas[i] == estrelas[j] && i != j) {
-                    return false;
-                }
-            }
         }
 
-        return true;
+        return estrelas[0] != estrelas[1];
     }
 
     /**
      * Diz qual o nivel da jogada
      *
      * @param chave - Chave do torneio corrente
-     * @return 0 caso n esteja em nenhum nivel, nivel da jogada caso contrario
+     * @return 0 caso nao esteja em nenhum nivel, nivel da jogada caso contrario
      */
     public int getNivelJogada(Key chave) {
         int nNumeros = getNumberEqual(numeros, chave.criaIteratorNumbers(), 5);
@@ -97,7 +94,7 @@ public class Jogada {
         return 0;
 
     }
-    
+
     /**
      * Obtem o numero de numeros iguais no vetor lista e no IteratorInt it
      *
